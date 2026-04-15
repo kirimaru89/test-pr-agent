@@ -1,0 +1,19 @@
+name: PR Agent
+on:
+  pull_request:
+    types: [opened, synchronize]
+  issue_comment:
+    types: [created]
+
+jobs:
+  pr_agent_job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: PR Agent
+        uses: Codium-ai/pr-agent@main
+        with:
+          openai_key: ${{ secrets.OPENAI_API_KEY }}
+        env:
+          OPENAI_API_BASE: ${{ secrets.OPENAI_API_BASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

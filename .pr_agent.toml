@@ -1,0 +1,149 @@
+# PR-Agent Configuration
+# Place this file in your repository root
+
+[config]
+# Custom LLM Configuration
+model = "MiniMax/MiniMax-M2.5"
+api_base = "https://netmind.viettel.vn/gateway/v1"
+
+# Response settings
+response_language = "vi-VN"  # PR responses in Vietnamese
+
+# Token limits
+max_model_tokens = 32000
+temperature = 0.2
+
+# Logging
+verbosity_level = 1
+log_level = "INFO"
+
+[github_app]
+# Commands to run when PR is created/updated
+pr_commands = [
+    "/describe --pr_description.final_update_message=false",
+    "/review",
+    "/improve",
+]
+
+# Commands to run when new commits are pushed
+handle_push_trigger = true
+push_commands = [
+    "/describe",
+    "/review",
+]
+
+# GitHub App settings
+handle_pr_actions = ['opened', 'reopened', 'ready_for_review']
+push_trigger_ignore_bot_commits = true
+push_trigger_ignore_merge_commits = true
+
+[pr_reviewer]
+# Security settings
+require_security_review = true
+enable_review_labels_security = true
+enable_review_labels_effort = true
+
+# Review settings
+require_tests_review = true
+require_ticket_analysis_review = true
+require_estimate_effort_to_review = true
+
+# Output settings
+publish_output_no_suggestions = true
+persistent_comment = true
+num_max_findings = 5
+
+# Custom instructions for reviewer
+extra_instructions = """
+- Check for SQL injection vulnerabilities in all database queries
+- Verify authentication and authorization on all endpoints
+- Ensure error messages don't expose sensitive information
+- Follow Viettel coding standards and best practices
+- Check for proper input validation
+"""
+
+[pr_description]
+# Description generation settings
+publish_labels = false
+add_original_user_description = true
+use_bullet_points = true
+enable_pr_diagram = true
+enable_semantic_files_types = true
+collapsible_file_list = 'adaptive'
+inline_file_summary = false
+
+# Custom instructions for description
+extra_instructions = """
+- Include JIRA ticket link if available in the description
+- Use Vietnamese language for the description
+- Focus on business impact and changes
+"""
+
+[pr_code_suggestions]
+# Code suggestions settings
+commitable_code_suggestions = false
+focus_only_on_problems = true
+suggestions_score_threshold = 5
+num_code_suggestions_per_chunk = 3
+enable_chat_text = false
+persistent_comment = true
+
+# Custom instructions for code suggestions
+extra_instructions = """
+- Prioritize security and performance improvements
+- Suggest idiomatic code following project patterns
+- Focus on fixes with high impact
+"""
+
+[pr_test]
+# Test generation settings
+num_tests = 3
+avoid_mocks = true
+enable_help_text = false
+
+# Custom instructions for test generation
+extra_instructions = """
+- Write tests in Vietnamese comments
+- Focus on edge cases and happy path
+- Use Given-When-Then format for test names
+"""
+
+[best_practices]
+# Project-specific best practices
+content = """
+# Viettel Code Review Standards
+
+## Security
+- No hardcoded credentials or API keys
+- All user inputs must be validated
+- Use parameterized queries to prevent SQL injection
+- Implement proper authentication/authorization checks
+
+## Code Quality
+- Functions should be under 50 lines
+- Meaningful variable and function names
+- Comprehensive error handling
+- No TODO/FIXME comments in production code
+
+## Testing
+- Unit tests for all public functions
+- Integration tests for critical workflows
+- Test coverage minimum 80%
+
+## Documentation
+- All public APIs must have docstrings
+- Complex logic requires inline comments
+- Update README when adding features
+"""
+
+enable_global_best_practices = false
+max_lines_allowed = 500
+
+[auto_best_practices]
+enable_auto_best_practices = true
+utilize_auto_best_practices = true
+max_patterns = 3
+
+[github]
+deployment_type = "user"
+ignore_bot_pr = true
