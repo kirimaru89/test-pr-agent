@@ -1,59 +1,40 @@
-# PR-Agent Configuration
-# Place this file in your repository root
-
 [config]
-# Custom LLM Configuration
 model = "MiniMax/MiniMax-M2.5"
 api_base = "https://netmind.viettel.vn/gateway/v1"
-
-# Response settings
-response_language = "vi-VN"  # PR responses in Vietnamese
-
-# Token limits
+response_language = "vi-VN"
 max_model_tokens = 32000
 temperature = 0.2
-
-# Logging
 verbosity_level = 1
 log_level = "INFO"
 
 [github_app]
-# Commands to run when PR is created/updated
 pr_commands = [
     "/describe --pr_description.final_update_message=false",
     "/review",
     "/improve",
 ]
 
-# Commands to run when new commits are pushed
 handle_push_trigger = true
 push_commands = [
     "/describe",
     "/review",
 ]
 
-# GitHub App settings
-handle_pr_actions = ['opened', 'reopened', 'ready_for_review']
+handle_pr_actions = ["opened", "reopened", "ready_for_review", "synchronize"]
 push_trigger_ignore_bot_commits = true
 push_trigger_ignore_merge_commits = true
 
 [pr_reviewer]
-# Security settings
 require_security_review = true
 enable_review_labels_security = true
 enable_review_labels_effort = true
-
-# Review settings
 require_tests_review = true
 require_ticket_analysis_review = true
 require_estimate_effort_to_review = true
-
-# Output settings
 publish_output_no_suggestions = true
 persistent_comment = true
 num_max_findings = 5
 
-# Custom instructions for reviewer
 extra_instructions = """
 - Check for SQL injection vulnerabilities in all database queries
 - Verify authentication and authorization on all endpoints
@@ -63,16 +44,14 @@ extra_instructions = """
 """
 
 [pr_description]
-# Description generation settings
 publish_labels = false
 add_original_user_description = true
 use_bullet_points = true
 enable_pr_diagram = true
 enable_semantic_files_types = true
-collapsible_file_list = 'adaptive'
+collapsible_file_list = "adaptive"
 inline_file_summary = false
 
-# Custom instructions for description
 extra_instructions = """
 - Include JIRA ticket link if available in the description
 - Use Vietnamese language for the description
@@ -80,7 +59,6 @@ extra_instructions = """
 """
 
 [pr_code_suggestions]
-# Code suggestions settings
 commitable_code_suggestions = false
 focus_only_on_problems = true
 suggestions_score_threshold = 5
@@ -88,7 +66,6 @@ num_code_suggestions_per_chunk = 3
 enable_chat_text = false
 persistent_comment = true
 
-# Custom instructions for code suggestions
 extra_instructions = """
 - Prioritize security and performance improvements
 - Suggest idiomatic code following project patterns
@@ -96,12 +73,10 @@ extra_instructions = """
 """
 
 [pr_test]
-# Test generation settings
 num_tests = 3
 avoid_mocks = true
 enable_help_text = false
 
-# Custom instructions for test generation
 extra_instructions = """
 - Write tests in Vietnamese comments
 - Focus on edge cases and happy path
@@ -109,7 +84,6 @@ extra_instructions = """
 """
 
 [best_practices]
-# Project-specific best practices
 content = """
 # Viettel Code Review Standards
 
@@ -135,7 +109,6 @@ content = """
 - Complex logic requires inline comments
 - Update README when adding features
 """
-
 enable_global_best_practices = false
 max_lines_allowed = 500
 
